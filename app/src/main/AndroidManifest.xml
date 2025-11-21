@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".EstakeApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:name=".EstakeApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -14,9 +14,10 @@
         android:theme="@style/Theme.EStake">
         <activity
             android:name=".MainActivity"
-            android:exported="false"/>
+            android:exported="false" />
+        <activity android:name=".authModule.uis.RegisterActivity" />
 
-=
+        =
         <activity
             android:name=".authModule.uis.SignInActivity"
             android:exported="true">

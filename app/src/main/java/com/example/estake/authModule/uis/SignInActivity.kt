@@ -59,8 +59,9 @@ class SignInActivity : AppCompatActivity() {
         }
 
         binding.tvRegister.setOnClickListener {
-            // We will build this next
-            // startActivity(Intent(this, RegisterActivity::class.java))
+            binding.tvRegister.setOnClickListener {
+                startActivity(Intent(this, RegisterActivity::class.java))
+            }
         }
     }
 
@@ -69,6 +70,11 @@ class SignInActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.loginState.collect { state ->
                 when (state) {
+                    is UiState.Idle -> {
+                        // Do nothing or reset button
+                        binding.btnLogin.text = "Secure Login"
+                        binding.btnLogin.isEnabled = true
+                    }
                     is UiState.Loading -> {
                         binding.btnLogin.text = "Verifying..."
                         binding.btnLogin.isEnabled = false

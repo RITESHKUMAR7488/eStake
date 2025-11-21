@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class) // Available everywhere
+@InstallIn(SingletonComponent::class)
 abstract class AuthModule {
 
     @Binds
