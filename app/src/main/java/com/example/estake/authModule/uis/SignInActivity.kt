@@ -11,6 +11,8 @@ import com.example.estake.authModule.viewModels.AuthViewModel
 import com.example.estake.common.utilities.PreferenceManager
 import com.example.estake.common.utilities.UiState
 import com.example.estake.databinding.ActivitySignInBinding
+import androidx.appcompat.app.AppCompatDelegate
+import com.example.estake.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,7 +39,7 @@ class SignInActivity : AppCompatActivity() {
 
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setupThemeToggle()
         setupListeners()
         observeState()
     }
@@ -86,6 +88,37 @@ class SignInActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+    private fun setupThemeToggle() {
+        // 1. Check current state
+        val isDark = preferenceManager.getBoolean(PreferenceManager.KEY_IS_DARK_MODE)
+        updateThemeIcon(isDark)
+
+        // 2. Handle Click
+        binding.btnThemeToggle.setOnClickListener {
+            val currentMode = preferenceManager.getBoolean(PreferenceManager.KEY_IS_DARK_MODE)
+            val newMode = !currentMode
+
+            // Save new preference
+            preferenceManager.putBoolean(PreferenceManager.KEY_IS_DARK_MODE, newMode)
+
+            // Apply Theme (This will recreate the Activity automatically)
+            if (newMode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+
+            updateThemeIcon(newMode)
+        }
+    }
+
+    private fun updateThemeIcon(isDark: Boolean) {
+        if (isDark) {
+            binding.btnThemeToggle.setImageResource(R.drawable.ic_sun) // Show Sun to switch to Light
+        } else {
+            binding.btnThemeToggle.setImageResource(R.drawable.ic_moon) // Show Moon to switch to Dark
         }
     }
 }

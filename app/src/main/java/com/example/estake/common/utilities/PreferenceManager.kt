@@ -28,5 +28,6 @@ class PreferenceManager @Inject constructor(private val sharedPreferences: Share
     companion object {
         const val KEY_USER_ID = "user_id"
         const val KEY_IS_LOGGED_IN = "is_logged_in"
+        const val KEY_IS_DARK_MODE = "is_dark_mode"
     }
 }
