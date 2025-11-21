@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    id("kotlin-kapt") // Required for Hilt
+    id("com.google.dagger.hilt.android") // Hilt Plugin
+    id("kotlin-parcelize") // For passing data between screens
 }
 
 android {
@@ -27,6 +30,11 @@ android {
             )
         }
     }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -52,4 +60,25 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    // --- 1. Dependency Injection (Hilt) ---
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.storage.ktx)
+    // --- 3. Coroutines (For smooth Async code) ---
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.play.services) // Magic for Firebase await()
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    // --- 4. Networking (Retrofit for Image Upload) ---
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+    // --- 5. Image Loading (Glide) ---
+    implementation(libs.glide)
+
+    // --- 6. Responsiveness (SDP/SSP) ---
+    implementation(libs.sdp.android)
+    implementation(libs.ssp.android)
 }
