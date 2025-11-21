@@ -65,7 +65,7 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
-    implementation(libs.firebase.storage.ktx)
+//    implementation(libs.firebase.storage.ktx)
     // --- 3. Coroutines (For smooth Async code) ---
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.play.services) // Magic for Firebase await()
