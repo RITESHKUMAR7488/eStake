@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "997083384712",
+    "project_id": "estake-75058",
+    "storage_bucket": "estake-75058.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997083384712:android:b476805b4375250029483d",
+        "android_client_info": {
+          "package_name": "com.example.estake"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsY0c3jTSFLFd0f51lGfYgKxQjlt_AybM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
