@@ -16,6 +16,7 @@ import com.example.estake.mainModule.adapters.PropertyAdapter
 import com.example.estake.mainModule.adapters.StoryAdapter
 import com.example.estake.mainModule.adapters.StoryModel
 import dagger.hilt.android.AndroidEntryPoint
+import android.content.Intent
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -168,7 +169,12 @@ class HomeFragment : Fragment() {
     private fun loadProperties(list: List<PropertyModel>) {
         binding.rvProperties.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = PropertyAdapter(list)
+            adapter = PropertyAdapter(list) { selectedProperty ->
+                // This code runs when a card is clicked
+                val intent = Intent(requireContext(), PropertyDetailActivity::class.java)
+                intent.putExtra("property_data", selectedProperty) // Pass the object
+                startActivity(intent)
+            }
             // ⚡ Animation to make it look smooth (Optional)
             scheduleLayoutAnimation()
         }

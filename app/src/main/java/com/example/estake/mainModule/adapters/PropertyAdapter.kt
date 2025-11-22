@@ -8,12 +8,21 @@ import com.example.estake.R // Make sure to import your R file
 import com.example.estake.common.models.PropertyModel
 import com.example.estake.databinding.ItemPropertyCardBinding
 
-class PropertyAdapter(private val list: List<PropertyModel>) : RecyclerView.Adapter<PropertyAdapter.ViewHolder>() {
+class PropertyAdapter(
+    private val list: List<PropertyModel>,
+    private val onItemClick: (PropertyModel) -> Unit // ⚡ Add this callback
+) : RecyclerView.Adapter<PropertyAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemPropertyCardBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemPropertyCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ViewHolder(
+            ItemPropertyCardBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -37,8 +46,12 @@ class PropertyAdapter(private val list: List<PropertyModel>) : RecyclerView.Adap
         } else {
             // ⚡ Use a default "Building" URL if none is provided
             // You can replace this with any image URL you like
-            val defaultImage = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80"
+            val defaultImage =
+                "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80"
             Glide.with(context).load(defaultImage).into(holder.binding.ivPropertyImage)
+        }
+        holder.itemView.setOnClickListener {
+            onItemClick(item)
         }
     }
 

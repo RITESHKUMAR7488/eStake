@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.estake.common.utilities.PreferenceManager
 import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -14,13 +15,23 @@ class EstakeApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        setupTheme()
+    }
 
-        // ⚡ Apply Theme immediately on startup
-        val isDarkMode = preferenceManager.getBoolean(PreferenceManager.KEY_IS_DARK_MODE)
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    private fun setupTheme() {
+        val key = PreferenceManager.KEY_IS_DARK_MODE
+
+        if (preferenceManager.contains(key)) {
+            // 1. User has manually chosen a theme before
+            val isDark = preferenceManager.getBoolean(key)
+            if (isDark) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
         } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            // 2. First launch (or no preference) -> Follow Phone Settings
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         }
     }
 }

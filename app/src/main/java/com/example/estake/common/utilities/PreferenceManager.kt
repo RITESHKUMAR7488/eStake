@@ -24,6 +24,9 @@ class PreferenceManager @Inject constructor(private val sharedPreferences: Share
     fun clear() {
         sharedPreferences.edit().clear().apply()
     }
+    fun contains(key: String): Boolean {
+        return sharedPreferences.contains(key)
+    }
 
     companion object {
         const val KEY_USER_ID = "user_id"

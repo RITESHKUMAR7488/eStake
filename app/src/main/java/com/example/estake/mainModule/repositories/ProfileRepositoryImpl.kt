@@ -1,0 +1,44 @@
+package com.example.estake.mainModule.repositories
+
+import com.example.estake.common.utilities.UiState
+import com.example.estake.mainModule.adapters.PortfolioStat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.delay
+import javax.inject.Inject
+
+class ProfileRepositoryImpl @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val firestore: FirebaseFirestore
+) : ProfileRepository {
+
+    override suspend fun getPortfolioStats(): UiState<List<PortfolioStat>> {
+        // ⚡ SIMULATING NETWORK CALL (Delay 1s)
+        delay(500)
+
+        // TODO: Later, fetch this from Firestore "users/{uid}/stats"
+        val dummyStats = listOf(
+            PortfolioStat("My Properties", "12", 75, "#00E5FF"),       // Cyan
+            PortfolioStat("Total Annual Rent", "₹3,63,72,612", 60, "#2979FF"), // Blue
+            PortfolioStat("Total Sq Ft", "38,400", 85, "#FFC107"),    // Yellow/Gold
+            PortfolioStat("Total P/L", "₹12,36,27,963", 90, "#D500F9"), // Purple
+            PortfolioStat("Avg ROI", "9.2%", 45, "#2979FF")           // Blue
+        )
+
+        return UiState.Success(dummyStats)
+    }
+
+    override suspend fun getUserProfile(): UiState<Map<String, String>> {
+        // ⚡ Getting Real User Info (Hybrid Approach)
+        val user = auth.currentUser
+        return if (user != null) {
+            val profileData = mapOf(
+                "name" to (user.displayName ?: "Valued Investor"),
+                "email" to (user.email ?: "investor@estake.com")
+            )
+            UiState.Success(profileData)
+        } else {
+            UiState.Failure("User not logged in")
+        }
+    }
+}

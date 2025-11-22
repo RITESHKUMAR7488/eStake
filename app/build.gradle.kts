@@ -60,6 +60,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.fragment.ktx)
     // --- 1. Dependency Injection (Hilt) ---
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)

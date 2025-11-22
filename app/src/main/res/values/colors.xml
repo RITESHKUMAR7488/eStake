@@ -10,4 +10,17 @@
     <color name="text_secondary">#757575</color>
     <color name="brand_primary">#0F62FE</color>
     <color name="icon_tint_bg">#E3F2FD</color>
+    <color name="midnight_bg">#0B0E14</color>         <!-- Deepest Background -->
+    <color name="midnight_card">#151A23</color>       <!-- Card Background -->
+    <color name="midnight_surface">#1C2331</color>    <!-- Lighter Surface -->
+
+    <color name="cyan_accent">#00E5FF</color>         <!-- The glowing cyan text/progress -->
+    <color name="blue_accent">#2979FF</color>         <!-- The blue progress -->
+    <color name="purple_accent">#D500F9</color>       <!-- The purple progress -->
+    <color name="orange_accent">#FF9100</color>       <!-- The orange progress -->
+
+    <color name="text_white_87">#DEFFFFFF</color>     <!-- High Emphasis -->
+    <color name="text_white_60">#99FFFFFF</color>     <!-- Medium Emphasis -->
+
+    <color name="upload_dashed_stroke">#2C3B4E</color> <!-- For the upload card border -->
 </resources>
