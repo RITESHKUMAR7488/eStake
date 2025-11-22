@@ -1,25 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_education"
-            android:icon="@drawable/ic_launcher_foreground"
-            android:title="Education" />
-        <item
-            android:id="@+id/nav_wallet"
-            android:icon="@drawable/ic_launcher_foreground"
-            android:title="Wallet" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_launcher_foreground"
-            android:title="Settings" />
-    </group>
+
+    <item android:title="Main">
+        <menu>
+            <item
+                android:id="@+id/nav_education"
+                android:title="Education" />
+            <item
+                android:id="@+id/nav_my_properties"
+                android:title="My Properties" />
+        </menu>
+    </item>
+
+    <item android:title="My Wallet">
+        <menu>
+            <item
+                android:id="@+id/nav_balance"
+                android:title="Balance: ₹0.00" />
+            <item
+                android:id="@+id/nav_transaction"
+                android:title="Transactions" />
+            <item
+                android:id="@+id/nav_add_funds"
+                android:title="Add Funds" />
+            <item
+                android:id="@+id/nav_withdraw"
+                android:title="Withdraw" />
+        </menu>
+    </item>
+
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_profile_edit"
+                android:title="Profile" />
+            <item
+                android:id="@+id/nav_settings"
+                android:title="Settings" />
+            <item
+                android:id="@+id/nav_logout"
+                android:title="Logout" />
+        </menu>
+    </item>
+
     <item android:title="Support">
         <menu>
             <item
                 android:id="@+id/nav_help"
-                android:icon="@drawable/ic_launcher_foreground"
-                android:title="Help &amp; FAQs" />
+                android:title="Help Center" />
+            <item
+                android:id="@+id/nav_contact"
+                android:title="Contact Us" />
+            <item
+                android:id="@+id/nav_privacy"
+                android:title="Privacy Policy" />
         </menu>
     </item>
+
 </menu>

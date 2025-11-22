@@ -1,52 +1,96 @@
 package com.example.estake
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.example.estake.authModule.uis.SignInActivity
+import com.example.estake.common.utilities.PreferenceManager
 import com.example.estake.databinding.ActivityMainBinding
 import com.example.estake.mainModule.uis.*
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var currentFragmentId = R.id.nav_home // Default
+
+    @Inject
+    lateinit var preferenceManager: PreferenceManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 1. Default: Load Home & Lock Drawer
-        loadFragment(HomeFragment())
-        lockDrawer()
+        // ⚡ 1. RESTORE STATE logic
+        if (savedInstanceState != null) {
+            // App is restarting (e.g., Theme Change) -> Restore the last ID
+            currentFragmentId = savedInstanceState.getInt("LAST_FRAGMENT_ID", R.id.nav_home)
+            binding.bottomNav.selectedItemId = currentFragmentId // This triggers the listener automatically
+        } else {
+            // First fresh launch -> Load Home
+            loadFragment(HomeFragment())
+            lockDrawer()
+        }
 
-        // 2. Handle Bottom Nav Clicks
+        setupBottomNav()
+        setupDrawerNav()
+    }
+
+    // ⚡ Save the current screen ID before activity destroys
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("LAST_FRAGMENT_ID", binding.bottomNav.selectedItemId)
+    }
+
+    private fun setupBottomNav() {
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
                     loadFragment(HomeFragment())
-                    lockDrawer() // 🔒 Cannot open drawer here
+                    lockDrawer()
                 }
                 R.id.nav_search -> {
                     loadFragment(SearchFragment())
-                    lockDrawer() // 🔒 Cannot open drawer here
+                    lockDrawer()
                 }
                 R.id.nav_invest -> {
                     loadFragment(InvestFragment())
-                    lockDrawer() // 🔒 Cannot open drawer here
+                    lockDrawer()
                 }
                 R.id.nav_reels -> {
                     loadFragment(ReelsFragment())
-                    lockDrawer() // 🔒 Cannot open drawer here
+                    lockDrawer()
                 }
                 R.id.nav_profile -> {
                     loadFragment(ProfileFragment())
-                    unlockDrawer() // 🔓 ENABLE drawer only here!
+                    unlockDrawer() // 🔓 Unlock only for Profile
                 }
             }
+            true
+        }
+    }
+
+    private fun setupDrawerNav() {
+        // ⚡ 4. DRAWER ACTIONS (Logout, Wallet, etc.)
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_logout -> {
+                    // ⚡ Handle Logout
+                    preferenceManager.clear()
+                    val intent = Intent(this, SignInActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
+                // Add other drawer actions here (Wallet, Settings, etc.)
+            }
+            binding.drawerLayout.closeDrawer(GravityCompat.END)
             true
         }
     }
@@ -57,17 +101,14 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    // 🔒 Helper: Disable Swipe
     private fun lockDrawer() {
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
-    // 🔓 Helper: Enable Swipe
     private fun unlockDrawer() {
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 
-    // Allow Fragments to open the drawer programmatically
     fun openDrawer() {
         binding.drawerLayout.openDrawer(GravityCompat.END)
     }

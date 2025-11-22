@@ -13,14 +13,14 @@ class ProfileRepositoryImpl @Inject constructor(
 ) : ProfileRepository {
 
     override suspend fun getPortfolioStats(): UiState<List<PortfolioStat>> {
-        // ⚡ SIMULATING NETWORK CALL (Delay 1s)
+        // ⚡ SIMULATING NETWORK DELAY (So you see it loading like a real app)
         delay(500)
 
-        // TODO: Later, fetch this from Firestore "users/{uid}/stats"
+        // ⚡ DUMMY DATA: This mimics what the Admin will eventually add to Firestore
         val dummyStats = listOf(
             PortfolioStat("My Properties", "12", 75, "#00E5FF"),       // Cyan
             PortfolioStat("Total Annual Rent", "₹3,63,72,612", 60, "#2979FF"), // Blue
-            PortfolioStat("Total Sq Ft", "38,400", 85, "#FFC107"),    // Yellow/Gold
+            PortfolioStat("Total Sq Ft", "38,400", 85, "#FFC107"),    // Gold
             PortfolioStat("Total P/L", "₹12,36,27,963", 90, "#D500F9"), // Purple
             PortfolioStat("Avg ROI", "9.2%", 45, "#2979FF")           // Blue
         )
@@ -29,7 +29,6 @@ class ProfileRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserProfile(): UiState<Map<String, String>> {
-        // ⚡ Getting Real User Info (Hybrid Approach)
         val user = auth.currentUser
         return if (user != null) {
             val profileData = mapOf(

@@ -5,9 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/midnight_bg">
+    android:background="@color/bg_screen">
 
-    <!-- 1. Header -->
     <LinearLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
@@ -22,12 +21,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="John Doe"
+            android:text="Loading..."
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"/>
 
-        <!-- Toggle Button (Moon/Sun) -->
         <ImageButton
             android:id="@+id/btnThemeToggle"
             android:layout_width="40dp"
@@ -35,19 +33,19 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_moon"
             app:tint="@color/text_primary"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp"
+            android:contentDescription="Toggle Theme"/>
 
-        <!-- Menu Button (Triggers Drawer) -->
         <ImageButton
             android:id="@+id/btnMenu"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_menu"
-            app:tint="@color/text_primary"/>
+            app:tint="@color/text_primary"
+            android:contentDescription="Open Menu"/>
     </LinearLayout>
 
-    <!-- 2. Profile Avatar (Centered) -->
     <ImageView
         android:id="@+id/ivAvatar"
         android:layout_width="80dp"
@@ -73,7 +71,6 @@
             android:orientation="vertical"
             android:paddingBottom="100dp">
 
-            <!-- 3. My Portfolio Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -96,7 +93,6 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_portfolio_stat"/>
 
-            <!-- 4. My Profile (Uploads) Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,7 +115,6 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_upload_property"/>
 
-            <!-- Add Property Button -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnAddProperty"
                 android:layout_width="wrap_content"
@@ -135,12 +130,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Click any slot to upload an image from your device."
+                android:text="Click any slot to upload an image."
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
-                android:gravity="end"/>
+                android:gravity="center"/>
 
         </LinearLayout>
     </ScrollView>

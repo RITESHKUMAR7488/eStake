@@ -16,11 +16,11 @@ class ProfileViewModel @Inject constructor(
     private val repository: ProfileRepository
 ) : ViewModel() {
 
-    // 1. Portfolio Stats State
+    // State for the Horizontal Stats List
     private val _statsState = MutableStateFlow<UiState<List<PortfolioStat>>>(UiState.Loading)
     val statsState: StateFlow<UiState<List<PortfolioStat>>> = _statsState
 
-    // 2. User Profile State
+    // State for User Name/Email
     private val _userState = MutableStateFlow<UiState<Map<String, String>>>(UiState.Loading)
     val userState: StateFlow<UiState<Map<String, String>>> = _userState
 
@@ -30,11 +30,7 @@ class ProfileViewModel @Inject constructor(
 
     fun loadProfileData() {
         viewModelScope.launch {
-            // Fetch Stats
-            _statsState.value = UiState.Loading
             _statsState.value = repository.getPortfolioStats()
-
-            // Fetch User Info
             _userState.value = repository.getUserProfile()
         }
     }

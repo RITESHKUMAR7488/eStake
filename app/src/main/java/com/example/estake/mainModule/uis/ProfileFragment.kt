@@ -30,7 +30,6 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    // ⚡ Connects to the ViewModel (Architecture)
     private val viewModel: ProfileViewModel by viewModels()
 
     @Inject lateinit var preferenceManager: PreferenceManager
@@ -46,86 +45,66 @@ class ProfileFragment : Fragment() {
         setupHeader()
         setupLists()
         setupDrawerTrigger()
-
-        // ⚡ Start listening to real data (or the delayed dummy data from Repository)
         observeData()
     }
 
     private fun setupHeader() {
-        // 1. Check saved theme preference
+        // 1. Theme Toggle Logic
         val isDark = preferenceManager.getBoolean(PreferenceManager.KEY_IS_DARK_MODE)
         updateThemeIcon(isDark)
 
-        // 2. Toggle Logic
         binding.btnThemeToggle.setOnClickListener {
             val newMode = !isDark
             preferenceManager.putBoolean(PreferenceManager.KEY_IS_DARK_MODE, newMode)
 
-            if (newMode) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
+            if (newMode) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
             updateThemeIcon(newMode)
         }
     }
 
     private fun updateThemeIcon(isDark: Boolean) {
-        if (isDark) {
-            binding.btnThemeToggle.setImageResource(R.drawable.ic_sun)
-        } else {
-            binding.btnThemeToggle.setImageResource(R.drawable.ic_moon)
-        }
+        binding.btnThemeToggle.setImageResource(if (isDark) R.drawable.ic_sun else R.drawable.ic_moon)
     }
 
     private fun setupLists() {
-        // 1. Initialize Portfolio List (Empty initially)
+        // Initialize Recycler Views (Data will come later via observer)
         binding.rvPortfolioStats.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        // 2. Initialize Uploads List (Static 5 slots for now)
         binding.rvUploads.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = UploadsAdapter(5)
+            adapter = UploadsAdapter(5) // Static 5 slots for uploads
         }
     }
 
     private fun setupDrawerTrigger() {
         binding.btnMenu.setOnClickListener {
-            (activity as? com.example.estake.MainActivity)?.openDrawer()
+            // ⚡ SAFELY open the drawer from MainActivity
+            val drawer = requireActivity().findViewById<DrawerLayout>(R.id.drawerLayout)
+            drawer?.openDrawer(GravityCompat.END)
         }
     }
 
     private fun observeData() {
-        // ⚡ Lifecycle-aware collection (Best Practice)
+        // ⚡ The "Brain" of the screen: Listening for data updates
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                // 1. Observe Portfolio Stats (Data from ViewModel)
+                // Watch for Stats Data (List)
                 launch {
                     viewModel.statsState.collect { state ->
-                        when (state) {
-                            is UiState.Success -> {
-                                // ⚡ Update the adapter when data arrives
-                                binding.rvPortfolioStats.adapter = PortfolioStatsAdapter(state.data)
-                            }
-                            is UiState.Loading -> {
-                                // Optional: Show shimmer here
-                            }
-                            is UiState.Failure -> {
-                                // Handle error (Toast or Log)
-                            }
-                            else -> {}
+                        if (state is UiState.Success) {
+                            binding.rvPortfolioStats.adapter = PortfolioStatsAdapter(state.data)
                         }
                     }
                 }
 
-                // 2. Observe User Profile (Name, Email)
+                // Watch for User Profile Data (Name)
                 launch {
                     viewModel.userState.collect { state ->
                         if (state is UiState.Success) {
                             binding.tvUserName.text = state.data["name"]
-                            // If you add email to XML later:
-                            // binding.tvUserEmail.text = state.data["email"]
                         }
                     }
                 }
@@ -133,10 +112,8 @@ class ProfileFragment : Fragment() {
         }
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }
